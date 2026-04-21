@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Welcome to Flutter',
+        title: 'BelPelis',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
@@ -45,26 +45,30 @@ class MyHomePage extends StatelessWidget {
               children: [
                 // Fondo 
                 Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 248, 161, 0).withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                 
-                // Texto
+                            width: 250,
+                            height: 250,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                  image: NetworkImage('https://definicion.de/wp-content/uploads/2016/09/cine-1.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                          ),
+                                          
+                // Texto fondoo
                 Text(
-                  'Hello World',
+                  'Bel-Pelis',
                   style: TextStyle(
-                    fontSize: 32.0,
-                    color: Color.fromARGB(255, 190, 44, 44),
+                    fontSize: 52,
+                    color: Color.fromARGB(255, 204, 255, 2),
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 30), //Espacio entre elemenytos
+            //Espacio entre elemenytos
+            const SizedBox(height: 30),
 
             //Elementos laterales
             Row(
@@ -74,7 +78,9 @@ class MyHomePage extends StatelessWidget {
                 const Icon(Icons.star, color: Color.fromARGB(255, 255, 215, 84)),
                 const SizedBox(width: 15),
                 //Texto
-                const Text('Bienvenidos'),
+                const Text('Hello World',
+                 style: TextStyle(fontSize: 32.0,)
+                 ),
                 //Estrella
                 const SizedBox(width: 15),
                 const Icon(Icons.star, color:  Color.fromARGB(255, 255, 215, 84)),
