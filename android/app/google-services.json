@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "274976516068",
+    "project_id": "flut-app-ffaab",
+    "storage_bucket": "flut-app-ffaab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274976516068:android:b5c49d96a18ecdae4ac9f1",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUrbaOlLR9_6OK5SYoiwJbzF_KPSBwU-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,16 @@
-import 'dart:convert'; // Necesario para procesar JSON
-import 'dart:math';    // Para generar IDs aleatorios
+import 'dart:convert'; 
+import 'dart:math';    
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http; // El paquete que causaba el error
+import 'package:http/http.dart' as http; 
 
-void main() {
+// BASE FIREBASE
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); 
+  await Firebase.initializeApp(); // Coneccion a google
   runApp(MyApp());
 }
 
@@ -28,17 +34,16 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  // Variables que guardarán las PokeAPI
+  // PokeAPI
   String pokemonName = 'Bel-Pelis';
   String pokemonImageUrl = 'https://definicion.de/wp-content/uploads/2016/09/cine-1.jpg';
   bool isLoading = false;
 
-  //Petición HTTP
+  //Petición 
   Future<void> fetchPokemon() async {
     isLoading = true;
     notifyListeners();
 
-    // Pokémon aleatorio (ID entre 1 y 151)
     final id = Random().nextInt(151) + 1;
     final url = Uri.parse('https://pokeapi.co/api/v2/pokemon/$id');
 
@@ -54,7 +59,7 @@ class MyAppState extends ChangeNotifier {
       debugPrint('Error al obtener datos: $e');
     } finally {
       isLoading = false;
-      notifyListeners(); // Actualizacion de pantalla
+      notifyListeners();
     }
   }
 }
@@ -72,7 +77,6 @@ class MyHomePage extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                // Circular con la imagen dinámica
                 Container(
                   width: 250,
                   height: 250,
@@ -85,7 +89,6 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Indicador de carga
                 if (appState.isLoading)
                   const CircularProgressIndicator(),
               ],
@@ -93,7 +96,7 @@ class MyHomePage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            // Fila de estrellas y nombre obtenido
+            //  estrellas y nombre 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -110,11 +113,38 @@ class MyHomePage extends StatelessWidget {
 
             const SizedBox(height: 40),
 
-            // Botón de la petición HTTP
+            //  Boton consultar
             ElevatedButton.icon(
               onPressed: () => appState.fetchPokemon(),
               icon: const Icon(Icons.download),
               label: const Text('Consultar Pokemon'),
+            ),
+            
+            const SizedBox(height: 20), 
+            // Boton para guardar en la base
+            ElevatedButton.icon(
+              onPressed: () async {
+                try {
+                  // Gardamos datos
+                  await FirebaseFirestore.instance.collection('pokemons_guardados').add({
+                    'nombre': appState.pokemonName,
+                    'imagen': appState.pokemonImageUrl,
+                    'fecha': DateTime.now(), 
+                  });
+                  
+                  // Mensaje exitoso
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('¡Datos enviados a Firebase!')),
+                  );
+                } catch (e) {
+                  print("Ocurrió un error: $e");
+                }
+              },
+              icon: const Icon(Icons.cloud_upload),
+              label: const Text('Guardar en Firebase'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange[100],
+              ),
             ),
           ],
         ),
